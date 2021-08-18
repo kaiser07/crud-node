@@ -1,8 +1,14 @@
+const { Console } = require('console');
 const express = require('express');
 const app = express();
 const router = express.Router();
 const fs = require('fs')
 const porta = 3000;
+
+var array = JSON.parse(fs.readFileSync('./data/db.json', 'utf-8'))
+var ultimo = array[array.length -1];
+var ultimoID = parseInt(ultimo.id)
+//console.log(`O ultimo id do array é ${ultimoID}`)
 
 app.use(express.json())
 
@@ -10,6 +16,7 @@ app.use(express.json())
 const readFile = () =>{
   const conteudo = fs.readFileSync('./data/db.json', 'utf-8')
     return JSON.parse(conteudo)
+    
 }
 
 //função para gravar dados no arquivo
@@ -31,16 +38,24 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    
-    const {id, nome, quantidade, valor, autor} = req.body;
+    //gerando um id automaticamente aproveitando os id's já existentes
+    const id = parseInt(ultimoID) + 1
+    console.log(`o próximo id é: ${id}`)
+
+    const { nome, quantidade, valor, autor} = req.body;
     const conteudoAtual = readFile()
-    conteudoAtual.push({id,nome, quantidade, valor, autor})
+    conteudoAtual.push({id, nome, quantidade, valor, autor})
     writeFile(conteudoAtual)
+    
     res.send({id, nome, quantidade, valor, autor})
 })
 
-router.put('/', (req, res) => {
-    res.send('Bem vindo')
+router.put('/:id', (req, res) => {
+    const {id} = req.params
+    const conteudoAtual = readFile()
+    const conteudoFiltro = conteudoAtual.find((item) => item.id === id)
+    res.send(conteudoFiltro)
+    
 })
 
 router.delete('/', (req, res) => {
