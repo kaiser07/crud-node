@@ -7,17 +7,18 @@
         "autor": "Márcio"
     },
     {
+        "id": "2",
         "nome": "placa de video",
         "quantidade": 10,
         "valor": 1800,
-        "autor": "willian"
+        "autor": "Luis"
     },
     {
-        "id": 3,
+        "id": "3",
         "nome": "water cooler",
         "quantidade": 15,
         "valor": 380,
-        "autor": "Márcio"
+        "autor": "José"
     },
     {
         "id": 4,
@@ -48,14 +49,14 @@
         "autor": "José"
     },
     {
-        "id": 8,
+        "id": "8",
         "nome": "MousePad",
         "quantidade": 30,
         "valor": 50.5,
         "autor": "José"
     },
     {
-        "id": 9,
+        "id": "9",
         "nome": "Microfone",
         "quantidade": 5,
         "valor": 130,

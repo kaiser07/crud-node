@@ -65,6 +65,7 @@ router.put('/:id', (req, res) => {
 
     
     const newObject = {
+        id: id,
         nome: nome ? nome: nomeAtual,
         quantidade: quantidade ? quantidade: qtdAtual,
         valor: valor ? valor: valorAtual,
@@ -78,8 +79,14 @@ router.put('/:id', (req, res) => {
 
 })
 
-router.delete('/', (req, res) => {
-    res.send('Bem vindo')
+router.delete('/:id', (req, res) => {
+    const { id } = req.params
+    const conteudoAtual = readFile()
+    const indiceFiltro = conteudoAtual.findIndex((item) => parseInt(item.id) === parseInt(id))
+    conteudoAtual.splice(indiceFiltro, 1)
+
+    writeFile(conteudoAtual)
+    res.send("Item removido com Sucesso")
 })
 
 app.use(router)
