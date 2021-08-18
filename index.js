@@ -6,23 +6,23 @@ const fs = require('fs')
 const porta = 3000;
 
 var array = JSON.parse(fs.readFileSync('./data/db.json', 'utf-8'))
-var ultimo = array[array.length -1];
+var ultimo = array[array.length - 1];
 var ultimoID = parseInt(ultimo.id)
 //console.log(`O ultimo id do array é ${ultimoID}`)
 
 app.use(express.json())
 
 //função para ler os dados que será reaproveitada
-const readFile = () =>{
-  const conteudo = fs.readFileSync('./data/db.json', 'utf-8')
+const readFile = () => {
+    const conteudo = fs.readFileSync('./data/db.json', 'utf-8')
     return JSON.parse(conteudo)
-    
+
 }
 
 //função para gravar dados no arquivo
 const writeFile = (conteudo) => {
     const conteudoConvertido = JSON.stringify(conteudo)
-    fs.writeFileSync('./data/db.json', conteudoConvertido ,'utf-8')
+    fs.writeFileSync('./data/db.json', conteudoConvertido, 'utf-8')
 }
 
 //retornando todos os dados
@@ -31,37 +31,56 @@ router.get('/', (req, res) => {
     res.send(conteudo)
 })
 
-//retornando os produtos de uma pesquisa
+//retornando um produto especifico para visualização
 router.get('/:id', (req, res) => {
-    const conteudo = fs.readFileSync('./data/db.json', 'utf-8')
-    res.send(JSON.parse(conteudo))
+    const { id } = req.params
+    const conteudoAtual = readFile()
+    const conteudoFiltro = conteudoAtual.findIndex((item) => parseInt(item.id) === parseInt(id))
+    res.send(conteudoFiltro)
+
 })
 
+//post para cadastrar novos produtos //ainda sem verificação dos campos
 router.post('/', (req, res) => {
     //gerando um id automaticamente aproveitando os id's já existentes
     const id = parseInt(ultimoID) + 1
-    console.log(`o próximo id é: ${id}`)
-
-    const { nome, quantidade, valor, autor} = req.body;
+    //console.log(`o próximo id é: ${id}`)
+    const { nome, quantidade, valor, autor } = req.body;
     const conteudoAtual = readFile()
-    conteudoAtual.push({id, nome, quantidade, valor, autor})
+    conteudoAtual.push({ id, nome, quantidade, valor, autor })
     writeFile(conteudoAtual)
-    
-    res.send({id, nome, quantidade, valor, autor})
+
+    res.send({ id, nome, quantidade, valor, autor })
 })
 
 router.put('/:id', (req, res) => {
-    const {id} = req.params
-    const conteudoAtual = readFile()
-    const conteudoFiltro = conteudoAtual.find((item) => item.id === id)
-    res.send(conteudoFiltro)
+    const { id } = req.params
+
+    const { nome, quantidade, valor, autor } = req.body;
     
+    const conteudoAtual = readFile()
+    const conteudoFiltro = conteudoAtual.findIndex((item) => parseInt(item.id) === parseInt(id))
+
+    const { nome: nomeAtual, quantidade: qtdAtual, valor: valorAtual, autor: autorAtual } = conteudoAtual[conteudoFiltro]
+
+    
+    const newObject = {
+        nome: nome ? nome: nomeAtual,
+        quantidade: quantidade ? quantidade: qtdAtual,
+        valor: valor ? valor: valorAtual,
+        autor: autor ? autor: autorAtual
+    }
+
+    conteudoAtual[conteudoFiltro] = newObject
+    writeFile(conteudoAtual)
+
+    res.send(newObject)
+
 })
 
 router.delete('/', (req, res) => {
     res.send('Bem vindo')
 })
-
 
 app.use(router)
 
