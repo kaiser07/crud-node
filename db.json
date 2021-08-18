@@ -1,0 +1,20 @@
+
+{
+    "produtos": [
+
+        {   "id": 1, "nome": "placa-mãe", "quantidade":12, "valor": 700.00,  "autor": "Márcio"  },
+        {   "id": 2, "nome": "placa de video", "quantidade":10, "valor": 1800.00, "autor": "Márcio"  },
+        {   "id": 3, "nome": "water cooler", "quantidade":15, "valor": 380.00, "autor": "Márcio"  },
+        {   "id": 4, "nome": "fonte 500W", "quantidade":20, "valor": 275.00, "autor": "Márcio"  }
+        
+    ],
+
+    "usuarios": [
+
+        {   "id":1, "nome": "Márcio", "email": "marcio@gmail.com"   },
+        {   "id":2, "nome": "André", "email": "andré@gmail.com"     },
+        {   "id":3, "nome": "Luis", "email": "luis@gmail.com"       },
+        {   "id":4, "nome": "José", "email": "jose@gmail.com"       },
+        {   "id":5, "nome": "Augusto", "email": "augusto@gmail.com" }
+    ]
+}
